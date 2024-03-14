@@ -2,7 +2,7 @@
 
 namespace Farhanisty\Matrix\Engine;
 
-use Farhanist\Matrix\Engine\Matrix;
+use Farhanisty\Matrix\Engine\Matrix;
 
 interface MatrixResultOperation
 {
