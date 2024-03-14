@@ -119,14 +119,4 @@ class Matrix
   {
     return $this->width;
   }
-
-  public function setHeight(int $height): void
-  {
-    $this->height = $height;
-  }
-
-  public function setWidth(int $width): void
-  {
-    $this->width = $width;
-  }
 }
