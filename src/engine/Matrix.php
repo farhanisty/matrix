@@ -16,7 +16,7 @@ class Matrix
     $this->initialize($height, $width, $values);
   }
 
-  private function initialize(int $height, int $width, array $values): void
+  public function initialize(int $height, int $width, array $values): void
   {
     if(!$this->validate($height, $width, $values)) {
       throw new \Exception("values is not valid");
