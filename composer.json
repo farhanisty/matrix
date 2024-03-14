@@ -1,0 +1,18 @@
+{
+    "name": "farhanisty/matrix",
+    "description": "library for matrix",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Farhanisty\\Matrix\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "farhanisty",
+            "email": "farhannivtasija@gmail.com"
+        }
+    ],
+    "require": {}
+}
