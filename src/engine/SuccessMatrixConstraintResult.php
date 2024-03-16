@@ -2,7 +2,7 @@
 
 namespace Farhanisty\Matrix\Engine;
 
-use Farhansity\Matrix\Engine\MatrixConstraintResult;
+use Farhanisty\Matrix\Engine\MatrixConstraintResult;
 
 class SuccessMatrixConstraintResult implements MatrixConstraintResult
 {
