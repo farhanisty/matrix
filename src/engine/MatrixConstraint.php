@@ -2,13 +2,12 @@
 
 namespace Farhanisty\Matrix\Engine;
 
-use Farhanist\Matrix\Engine\Matrix;
+use Farhanisty\Matrix\Engine\Matrix;
+use Farhanisty\Matrix\Engine\MatrixConstraintResult;
 
 interface MatrixConstraint
 {
-  public function getMessage(): string;
-
   public function setNext(MatrixConstraint $nextConstraint): MatrixConstraint;
 
-  public function check(): bool;
+  public function check(): MatrixConstraintResult;
 }

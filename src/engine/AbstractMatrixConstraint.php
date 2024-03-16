@@ -2,7 +2,9 @@
 
 namespace Farhanisty\Matrix\Engine;
 
-use Farhanist\Matrix\Engine\MatrixConstraint;
+use Farhanisty\Matrix\Engine\MatrixConstraint;
+use Farhanisty\Matrix\Engine\MatrixConstraintResult;
+use Farhanisty\Matrix\Engine\SuccessMatrixConstraintResult;
 
 abstract class AbstractMatrixConstraint implements MatrixConstraint
 {
@@ -15,12 +17,12 @@ abstract class AbstractMatrixConstraint implements MatrixConstraint
     return $nextConstraint;
   }
 
-  public function check(): bool
+  public function check(): MatrixConstraintResult
   {
     if($this->nextConstraint) {
       $this->nextConstraint->check();
     }
 
-    return true;
+    return new SuccessMatrixConstraintResult();
   }
 }
