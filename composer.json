@@ -14,5 +14,7 @@
             "email": "farhannivtasija@gmail.com"
         }
     ],
-    "require": {}
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    }
 }
