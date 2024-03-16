@@ -4,6 +4,7 @@ namespace Farhanisty\Matrix\Engine;
 
 use Farhanisty\Matrix\Engine\ColMatrix;
 use Farhanisty\Matrix\Engine\RowMatrix;
+use Farhanisty\Matrix\Exceptions;
 
 class Matrix
 {
@@ -30,16 +31,16 @@ class Matrix
   public static function validate(int $height, int $width, array $values): bool
   {
     if($height < 0 || $width < 0) {
-      throw new \Exception("size is not valid. must be unsigned int");
+      throw new Exceptions\InvalidMatrixSizeException();
     }
 
     if(count($values) != $height) {
-      return false;
+      throw new Exceptions\InvalidMatrixInitializationException("Matrix height not same as height setted");
     }
 
     foreach($values as $v) {
       if(count($v) != $width) {
-        return false;
+      throw new Exceptions\InvalidMatrixInitializationException("Matrix width not same as width setted");
       }
     }
 
@@ -48,16 +49,19 @@ class Matrix
 
   public function getByPosition(int $row, int $col): int
   {
-    return $this-getValues()[$row][$col];
+    if($row < 1 || $row > $this->getHeight() || $col < 1 || $col > $this->getWidth()) {
+      throw new Exceptions\OutOfRangeException();
+    }
+    return $this->getValues()[$row - 1][$col - 1];
   }
 
   public function getRow(int $position) 
   {
-    if($this->getHeight() < $position) {
-      throw new \Exception("position must be not more than matrix height");
+    if($position < 0 || $position > $this->getHeight()) {
+      throw new Exceptions\OutOfRangeException("out of range. position must be not more than matrix height");
     }
 
-    return new RowMatrix($this->getValues()[$position - 1], $position);
+    return new RowMatrix($this->getValues()[$position - 1]);
   }
 
   public function getAllRows(): array
@@ -65,7 +69,7 @@ class Matrix
     $rows = [];
 
     foreach($this->getValues() as $key => $value) {
-      $rows[] = new RowMatrix($value, $key + 1);
+      $rows[] = new RowMatrix($value);
     }
 
     return $rows;
@@ -73,8 +77,8 @@ class Matrix
 
   public function getCol(int $position)
   {
-    if($this->getWidth() < $position) {
-      throw new \Exception("position must be not more than matrix width");
+    if($position < 0 || $position > $this->getWidth()) {
+      throw new Exceptions\OutOfRangeException("position must be not more than matrix height");
     }
 
     $temp = [];
@@ -83,7 +87,7 @@ class Matrix
       $temp[] = $value[$position - 1];
     }
 
-    return new ColMatrix($temp, $position);
+    return new ColMatrix($temp);
   }
 
   public function getAllCols(): array
@@ -99,7 +103,7 @@ class Matrix
     $cols = [];
 
     foreach($temp as $key => $t) {
-      $cols[] = new ColMatrix($t, $key + 1);
+      $cols[] = new ColMatrix($t);
     }
 
     return $cols;
@@ -108,6 +112,11 @@ class Matrix
   public function getValues(): array
   {
     return $this->values;
+  }
+
+  public function isEqual(Matrix $otherMatrix): bool
+  {
+    return serialize($this) == serialize($otherMatrix);
   }
 
   public function getHeight(): int

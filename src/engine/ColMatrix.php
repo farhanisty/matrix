@@ -2,15 +2,15 @@
 
 namespace Farhanisty\Matrix\Engine;
 
+use Farhanisty\Matrix\Exceptions\OutOfRangeException;
+
 class ColMatrix
 {
   private array $values;
-  private int $position;
 
-  public function __construct(array $values, int $position)
+  public function __construct(array $values)
   {
     $this->values = $values;
-    $this->position = $position;
   }
 
   public function getValues(): array
@@ -18,9 +18,18 @@ class ColMatrix
     return $this->values;
   }
 
-  public function getPosition(): int
+  public function getValueByPosition(int $position): int
   {
-    return $this->position;
+    if($position > $this->length() || $position < 1) {
+      throw new OutOfRangeException();
+    }
+
+    return $this->getValues()[$position - 1];
+  }
+
+  public function length(): int
+  {
+    return count($this->getValues());
   }
 
   public function isSameValues(): bool
