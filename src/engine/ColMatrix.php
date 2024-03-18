@@ -2,6 +2,9 @@
 
 namespace Farhanisty\Matrix\Engine;
 
+use Farhanisty\Matrix\Custom\Constraint\SetTypeOfArrayConstraint;
+use Farhanisty\Matrix\Custom\Constraint\MustBeSameValueConstraint;
+use Farhanisty\Matrix\Custom\Constraint\ValueRangeConstraint;
 use Farhanisty\Matrix\Exceptions\OutOfRangeException;
 
 class ColMatrix
@@ -18,9 +21,34 @@ class ColMatrix
     return $this->values;
   }
 
+  public function setValues(array $values): void
+  {
+    $constraint = new SetTypeOfArrayConstraint($values, "integer");
+    $constraint->setNext(new MustBeSameValueConstraint($this->length(), count($values)));
+
+    $result = $constraint->check();
+
+    if (!$result->getStatus()) {
+      throw new \InvalidArgumentException($result->getMessage());
+    }
+    $this->values = $values;
+  }
+
+  public function setValueByPosition(int $position, int $value): void
+  {
+    $constraint = new ValueRangeConstraint(1, $this->length(), $position);
+    $result = $constraint->check();
+
+    if (!$result->getStatus()) {
+      throw new \OutOfRangeException($result->getMessage());
+    }
+
+    $this->values[$position - 1] = $value;
+  }
+
   public function getValueByPosition(int $position): int
   {
-    if($position > $this->length() || $position < 1) {
+    if ($position > $this->length() || $position < 1) {
       throw new OutOfRangeException();
     }
 
@@ -32,12 +60,23 @@ class ColMatrix
     return count($this->getValues());
   }
 
+  public function multiplyValues(): int
+  {
+    $result = 1;
+
+    foreach ($this->getValues() as $value) {
+      $result *= $value;
+    }
+
+    return $result;
+  }
+
   public function isSameValues(): bool
   {
     $temp = $this->values[0];
 
-    foreach($this->values as $key => $value) {
-      if($value != $temp) {
+    foreach ($this->values as $key => $value) {
+      if ($value != $temp) {
         return false;
       }
     }
@@ -47,10 +86,10 @@ class ColMatrix
 
   public function isContain(int $searchValue): bool
   {
-    foreach($this->values as $value) {
-      if($value == $searchValue) {
+    foreach ($this->values as $value) {
+      if ($value == $searchValue) {
         return true;
-      } 
+      }
     }
 
     return false;
