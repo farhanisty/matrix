@@ -5,6 +5,7 @@ namespace Farhanisty\Matrix\Engine;
 use Farhanisty\Matrix\Engine\Matrix;
 use Farhanisty\Matrix\Engine\RowMatrix;
 use Farhanisty\Matrix\Exceptions;
+use Farhanisty\Matrix\Exceptions\InvalidMatrixValueException;
 use PHPUnit\Framework\TestCase;
 
 final class MatrixTest extends TestCase
@@ -13,49 +14,49 @@ final class MatrixTest extends TestCase
 
   public function setUp(): void
   {
-    $this->matrix = new Matrix(2,3,[[1,2,3], [3,4,5]]);
+    $this->matrix = new Matrix(2, 3, [[1, 2, 3], [3, 4, 5]]);
   }
 
   public function testValidConstructor()
   {
-    $matrix = new Matrix(2,3,[[1,2,3], [3,4,5]]);
+    $matrix = new Matrix(2, 3, [[1, 2, 3], [3, 4, 5]]);
 
     $this->assertSame($matrix->getHeight(), 2);
     $this->assertSame($matrix->getWidth(), 3);
-    $this->assertSame($matrix->getValues(), [[1,2,3], [3,4,5]]);
+    $this->assertSame($matrix->getValues(), [[1, 2, 3], [3, 4, 5]]);
   }
 
   public function testInvalidSizeConstructor()
   {
     $this->expectException(Exceptions\InvalidMatrixSizeException::class);
 
-    new Matrix(0, -2, [[],[]]);
+    new Matrix(0, -2, [[], []]);
   }
 
   public function testInvalidHeightValueConstructor()
   {
     $this->expectException(Exceptions\InvalidMatrixInitializationException::class);
 
-    new Matrix(4, 2, [[1,2],[2,3],[3,5]]);
+    new Matrix(4, 2, [[1, 2], [2, 3], [3, 5]]);
   }
 
   public function testInvalidWidthValueConstructor()
   {
     $this->expectException(Exceptions\InvalidMatrixInitializationException::class);
 
-    new Matrix(4, 2, [[1,2,4],[2,3,6],[3,5,7],[4,5,8]]);
+    new Matrix(4, 2, [[1, 2, 4], [2, 3, 6], [3, 5, 7], [4, 5, 8]]);
   }
 
   public function testGetByPosition()
   {
-    $this->assertSame($this->matrix->getByPosition(1,1), 1);
-    $this->assertSame($this->matrix->getByPosition(1,2), 2);
-    $this->assertSame($this->matrix->getByPosition(2,1), 3);
-    $this->assertSame($this->matrix->getByPosition(2,2), 4);
+    $this->assertSame($this->matrix->getByPosition(1, 1), 1);
+    $this->assertSame($this->matrix->getByPosition(1, 2), 2);
+    $this->assertSame($this->matrix->getByPosition(2, 1), 3);
+    $this->assertSame($this->matrix->getByPosition(2, 2), 4);
 
     $this->expectException(Exceptions\OutOfRangeException::class);
 
-    $this->matrix->getByPosition(2,4);
+    $this->matrix->getByPosition(2, 4);
   }
 
   public function testGetRow()
@@ -76,7 +77,7 @@ final class MatrixTest extends TestCase
     $col = $this->matrix->getCol(1);
 
     $this->assertInstanceOf(ColMatrix::class, $col);
-    $this->assertSame($col->getValues(), [1,3]);
+    $this->assertSame($col->getValues(), [1, 3]);
 
     $this->expectException(Exceptions\OutOfRangeException::class);
 
@@ -89,7 +90,7 @@ final class MatrixTest extends TestCase
 
     $this->assertSame(count($cols), 3);
 
-    foreach($cols as $col) {
+    foreach ($cols as $col) {
       $this->assertInstanceOf(ColMatrix::class, $col);
     }
   }
@@ -100,16 +101,16 @@ final class MatrixTest extends TestCase
 
     $this->assertSame(count($rows), 2);
 
-    foreach($rows as $row) {
+    foreach ($rows as $row) {
       $this->assertInstanceOf(RowMatrix::class, $row);
     }
   }
 
   public function testIsEqual()
   {
-    $matrix1 = new Matrix(2,2,[[2,3], [3,4]]);
-    $matrix2 = new Matrix(2,2,[[2,3], [3,4]]);
-    $matrix3 = new Matrix(3,2,[[1,2],[3,4],[5,6]]);
+    $matrix1 = new Matrix(2, 2, [[2, 3], [3, 4]]);
+    $matrix2 = new Matrix(2, 2, [[2, 3], [3, 4]]);
+    $matrix3 = new Matrix(3, 2, [[1, 2], [3, 4], [5, 6]]);
 
     $this->assertTrue($matrix1->isEqual($matrix2));
     $this->assertFalse($matrix1->isEqual($matrix3));
@@ -119,5 +120,51 @@ final class MatrixTest extends TestCase
   {
     $this->assertSame($this->matrix->getHeight(), 2);
     $this->assertSame($this->matrix->getWidth(), 3);
+  }
+
+  public function testSetByPosition()
+  {
+    $matrix = new Matrix(2, 2, [[1, 2], [3, 4]]);
+    $this->assertSame($matrix->getByPosition(1, 1), 1);
+
+    $matrix->setByPosition(1, 1, 5);
+    $this->assertSame($matrix->getByPosition(1, 1), 5);
+
+    $this->assertSame($matrix->getValues(), [[5, 2], [3, 4]]);
+  }
+
+  public function testReplaceCol()
+  {
+    $matrix = new Matrix(2, 2, [[1, 2], [3, 4]]);
+    $this->assertSame($matrix->getByPosition(1, 1), 1);
+    $this->assertSame($matrix->getByPosition(2, 1), 3);
+    $this->assertSame($matrix->getValues(), [[1, 2], [3, 4]]);
+
+    $matrix->replaceCol(1, [5, 6]);
+    $this->assertSame($matrix->getByPosition(1, 1), 5);
+    $this->assertSame($matrix->getByPosition(2, 1), 6);
+    $this->assertSame($matrix->getValues(), [[5, 2], [6, 4]]);
+  }
+
+  public function testOutRangeReplaceCol()
+  {
+    $this->expectException(InvalidMatrixValueException::class);
+    $this->matrix->replaceCol(4, [1, 2]);
+  }
+
+  public function testReplaceRow()
+  {
+    $matrix = new Matrix(2, 2, [[1, 2], [3, 4]]);
+    $this->assertSame($matrix->getByPosition(1, 1), 1);
+    $this->assertSame($matrix->getByPosition(1, 2), 2);
+    $this->assertSame($matrix->getValues(), [[1, 2], [3, 4]]);
+
+    $matrix->replaceRow(1, [5, 6]);
+    $this->assertSame($matrix->getByPosition(1, 1), 5);
+    $this->assertSame($matrix->getByPosition(1, 2), 6);
+    $this->assertSame($matrix->getValues(), [[5, 6], [3, 4]]);
+
+    $this->expectException(InvalidMatrixValueException::class);
+    $this->matrix->replaceRow(3, [4, 7]);
   }
 }
