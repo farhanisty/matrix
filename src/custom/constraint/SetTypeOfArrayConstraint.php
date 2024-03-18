@@ -6,19 +6,20 @@ use Farhanisty\Matrix\Engine\AbstractMatrixConstraint;
 use Farhanisty\Matrix\Engine\FailedMatrixConstraintResult;
 use Farhanisty\Matrix\Engine\MatrixConstraintResult;
 
-class MustBeSameValueConstraint extends AbstractMatrixConstraint
+class SetTypeOfArrayConstraint extends AbstractMatrixConstraint
 {
   public function __construct(
-    private int $firstValue,
-    private int $secondValue,
-    protected string $message = "Value is not same"
+    private array $array,
+    private string $type
   ) {
   }
 
   public function check(): MatrixConstraintResult
   {
-    if ($this->firstValue != $this->secondValue) {
-      return new FailedMatrixConstraintResult($this->message);
+    foreach ($this->array as $value) {
+      if (gettype($value) != $this->type) {
+        return new FailedMatrixConstraintResult("This array contains value that not " . $this->type);
+      }
     }
 
     return parent::check();
