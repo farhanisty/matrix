@@ -19,8 +19,8 @@ abstract class AbstractMatrixConstraint implements MatrixConstraint
 
   public function check(): MatrixConstraintResult
   {
-    if($this->nextConstraint) {
-      $this->nextConstraint->check();
+    if ($this->nextConstraint) {
+      return $this->nextConstraint->check();
     }
 
     return new SuccessMatrixConstraintResult();
