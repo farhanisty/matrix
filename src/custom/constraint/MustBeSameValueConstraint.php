@@ -9,8 +9,8 @@ use Farhanisty\Matrix\Engine\MatrixConstraintResult;
 class MustBeSameValueConstraint extends AbstractMatrixConstraint
 {
   public function __construct(
-    private int $firstValue,
-    private int $secondValue,
+    private $firstValue,
+    private $secondValue,
     protected string $message = "Value is not same"
   ) {
   }
