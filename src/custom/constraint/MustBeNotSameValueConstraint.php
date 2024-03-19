@@ -3,6 +3,7 @@
 namespace Farhanisty\Matrix\Custom\Constraint;
 
 use Farhanisty\Matrix\Engine\AbstractMatrixConstraint;
+use Farhanisty\Matrix\Engine\FailedMatrixConstraintResult;
 use Farhanisty\Matrix\Engine\MatrixConstraintResult;
 
 class MustBeNotSameValueConstraint extends AbstractMatrixConstraint
@@ -15,8 +16,8 @@ class MustBeNotSameValueConstraint extends AbstractMatrixConstraint
 
   public function check(): MatrixConstraintResult
   {
-    if ($this->firstValue !== $this->secondValue) {
-      return FailedMatrixConstraintResult("Both value must be not same");
+    if ($this->firstValue === $this->secondValue) {
+      return new FailedMatrixConstraintResult("Both value must be not same");
     }
 
     return parent::check();
