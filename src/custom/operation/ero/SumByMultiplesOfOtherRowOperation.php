@@ -4,12 +4,12 @@ namespace Farhanisty\Matrix\Custom\Operation\ERO;
 
 use Farhanisty\Matrix\Custom\Constraint\MustBeNotSameValueConstraint;
 use Farhanisty\Matrix\Custom\Constraint\ValueRangeConstraint;
+use Farhanisty\Matrix\Engine\ElementaryRowOperation;
 use Farhanisty\Matrix\Engine\HasConstraint;
 use Farhanisty\Matrix\Engine\Matrix;
 use Farhanisty\Matrix\Engine\MatrixConstraint;
-use Farhanisty\Matrix\Engine\MatrixResultOperation;
 
-class SumByMultiplesOfOtherRowOperation implements MatrixResultOperation, HasConstraint
+class SumByMultiplesOfOtherRowOperation implements ElementaryRowOperation, HasConstraint
 {
   public function __construct(
     private float $scalar,
@@ -53,5 +53,10 @@ class SumByMultiplesOfOtherRowOperation implements MatrixResultOperation, HasCon
     $values[$this->mainRow - 1] = $result;
 
     return $values;
+  }
+
+  public function getDescription(): string
+  {
+    return $this->scalar . "B" . $this->otherRow . " + B" . $this->mainRow;
   }
 }

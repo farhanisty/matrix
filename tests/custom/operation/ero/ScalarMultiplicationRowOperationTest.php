@@ -26,4 +26,12 @@ class ScalarMultiplicationRowOperationTest extends TestCase
 
     $this->assertFalse($constraintResult->getStatus());
   }
+
+  public function testDescription()
+  {
+    $matrix = new Matrix(3, 4, [[1, 2, 3, 4], [5, 6, 7, 7], [2, 2, 2, 2]]);
+    $operation = new ScalarMultiplicationRowOperation(2, 3, $matrix);
+
+    $this->assertSame("2 * B3", $operation->getDescription());
+  }
 }

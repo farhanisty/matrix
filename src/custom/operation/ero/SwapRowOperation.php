@@ -3,12 +3,12 @@
 namespace Farhanisty\Matrix\Custom\Operation\ERO;
 
 use Farhanisty\Matrix\Custom\Constraint\ValueRangeConstraint;
+use Farhanisty\Matrix\Engine\ElementaryRowOperation;
 use Farhanisty\Matrix\Engine\HasConstraint;
 use Farhanisty\Matrix\Engine\Matrix;
 use Farhanisty\Matrix\Engine\MatrixConstraint;
-use Farhanisty\Matrix\Engine\MatrixResultOperation;
 
-class SwapRowOperation implements MatrixResultOperation, HasConstraint
+class SwapRowOperation implements ElementaryRowOperation, HasConstraint
 {
   public function __construct(
     private int $firstRow,
@@ -46,5 +46,10 @@ class SwapRowOperation implements MatrixResultOperation, HasConstraint
     $result[$this->secondRow - 1] = $firstRow;
 
     return $result;
+  }
+
+  public function getDescription(): string
+  {
+    return "B" . $this->firstRow . " <=> " . "B" . $this->secondRow;
   }
 }

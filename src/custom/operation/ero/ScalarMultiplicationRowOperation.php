@@ -4,12 +4,12 @@ namespace Farhanisty\Matrix\Custom\Operation\ERO;
 
 use Farhanisty\Matrix\Custom\Constraint\MustBeNotSameValueConstraint;
 use Farhanisty\Matrix\Custom\Constraint\ValueRangeConstraint;
+use Farhanisty\Matrix\Engine\ElementaryRowOperation;
 use Farhanisty\Matrix\Engine\HasConstraint;
 use Farhanisty\Matrix\Engine\Matrix;
 use Farhanisty\Matrix\Engine\MatrixConstraint;
-use Farhanisty\Matrix\Engine\MatrixResultOperation;
 
-class ScalarMultiplicationRowOperation implements MatrixResultOperation, HasConstraint
+class ScalarMultiplicationRowOperation implements ElementaryRowOperation, HasConstraint
 {
   public function __construct(
     private float $scalar,
@@ -50,5 +50,10 @@ class ScalarMultiplicationRowOperation implements MatrixResultOperation, HasCons
     $values[$this->row - 1] = $valueTemp;
 
     return $values;
+  }
+
+  public function getDescription(): string
+  {
+    return $this->scalar . " * B" . $this->row;
   }
 }

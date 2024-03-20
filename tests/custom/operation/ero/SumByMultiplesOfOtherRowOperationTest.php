@@ -21,4 +21,13 @@ class SumByMultiplesOfOtherRowOperationTest extends TestCase
 
     $this->assertSame([-5.0, -7.0], $matrix->getRow(2)->getValues());
   }
+
+  public function testDescription()
+  {
+    $matrix = new Matrix(2, 2, [[6, 3], [-1, 4]]);
+
+    $operation = new SumByMultiplesOfOtherRowOperation(2, 2, 1, $matrix);
+
+    $this->assertSame("2B2 + B1", $operation->getDescription());
+  }
 }
