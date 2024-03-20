@@ -14,7 +14,7 @@ class ScalarMultiplicationRowOperationTest extends TestCase
     $operation = new ScalarMultiplicationRowOperation(5, 3, $matrix);
     $operation->executeTo($matrix);
 
-    $this->assertSame([10, 10, 10, 10], $matrix->getRow(3)->getValues());
+    $this->assertSame([10.0, 10.0, 10.0, 10.0], $matrix->getRow(3)->getValues());
   }
 
   public function testScalarIsZero()

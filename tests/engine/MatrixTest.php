@@ -130,7 +130,7 @@ final class MatrixTest extends TestCase
     $matrix->setByPosition(1, 1, 5);
     $this->assertSame($matrix->getByPosition(1, 1), 5);
 
-    $this->assertSame($matrix->getValues(), [[5, 2], [3, 4]]);
+    $this->assertSame($matrix->getValues(), [[5.0, 2], [3, 4]]);
   }
 
   public function testReplaceCol()

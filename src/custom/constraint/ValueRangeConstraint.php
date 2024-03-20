@@ -9,16 +9,16 @@ use Farhanisty\Matrix\Engine\MatrixConstraintResult;
 class ValueRangeConstraint extends AbstractMatrixConstraint
 {
   public function __construct(
-    private int $firstInterval,
-    private int $lastInterval,
-    private int $value
+    private float $firstInterval,
+    private float $lastInterval,
+    private float $value
   ) {
   }
 
   public function check(): MatrixConstraintResult
   {
     if ($this->value < $this->firstInterval || $this->value > $this->lastInterval) {
-      return new FailedMatrixConstraintResult($this->value . " out of interval [" . $this->firstInterval . ", " . $this->lastnterval . "]");
+      return new FailedMatrixConstraintResult($this->value . " out of interval [" . $this->firstInterval . ", " . $this->lastInterval . "]");
     }
     return parent::check();
   }

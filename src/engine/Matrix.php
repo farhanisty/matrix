@@ -57,7 +57,7 @@ class Matrix
     return $this->getValues()[$row - 1][$col - 1];
   }
 
-  public function setByPosition(int $row, int $col, int $value)
+  public function setByPosition(int $row, int $col, float $value)
   {
     $constraint = new ValueRangeConstraint(1, $this->getHeight(), $row);
     $constraint->setNext(new ValueRangeConstraint(1, $this->getWidth(), $col));

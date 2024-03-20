@@ -12,7 +12,7 @@ use Farhanisty\Matrix\Engine\MatrixResultOperation;
 class SumByMultiplesOfOtherRowOperation implements MatrixResultOperation, HasConstraint
 {
   public function __construct(
-    private int $scalar,
+    private float $scalar,
     private int $otherRow,
     private int $mainRow,
     private Matrix $matrix

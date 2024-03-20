@@ -9,18 +9,20 @@ class BasicMatrixVisualizer implements MatrixVisualizer
 {
   public function visualize(Matrix $matrix): void
   {
-    foreach($matrix->getAllRows() as $row) {
-      foreach($row->getValues() as $value) {
+    foreach ($matrix->getAllRows() as $row) {
+      foreach ($row->getValues() as $value) {
         echo $value . "  ";
       }
 
       echo "\n";
     }
+
+    echo "\n";
   }
 
   public function visualizeMany(array $matrixes): void
   {
-    foreach($matrixes as $matrix) {
+    foreach ($matrixes as $matrix) {
       $this->visualize($matrix);
     }
   }

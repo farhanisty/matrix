@@ -24,10 +24,4 @@ final class ValueRangeConstraintTest extends TestCase
     $this->assertInstanceOf(FailedMatrixConstraintResult::class, $result);
     $this->assertStringStartsWith("11 out of interval", $result->getMessage());
   }
-
-  public function testInRangeInterval()
-  {
-    $constraint = new ValueRangeConstraint(1, 10, 5);
-    $result = $constraint->check();
-  }
 }

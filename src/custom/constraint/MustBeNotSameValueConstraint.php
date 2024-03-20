@@ -16,7 +16,7 @@ class MustBeNotSameValueConstraint extends AbstractMatrixConstraint
 
   public function check(): MatrixConstraintResult
   {
-    if ($this->firstValue === $this->secondValue) {
+    if ($this->firstValue == $this->secondValue) {
       return new FailedMatrixConstraintResult("Both value must be not same");
     }
 
