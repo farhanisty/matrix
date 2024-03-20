@@ -59,4 +59,18 @@ class SumByMultiplesOfOtherRowOperation implements ElementaryRowOperation, HasCo
   {
     return $this->scalar . "B" . $this->otherRow . " + B" . $this->mainRow;
   }
+
+  public function undo(Matrix $matrix): void
+  {
+    $mainRowValues = $matrix->getRow($this->mainRow)->getValues();
+    $otherRow = $matrix->getRow($this->otherRow);
+
+    $result = [];
+
+    foreach ($otherRow->getValues() as $key => $value) {
+      $result[] = $mainRowValues[$key] - ($value * $this->scalar);
+    }
+
+    $matrix->replaceRow($this->mainRow, $result);
+  }
 }

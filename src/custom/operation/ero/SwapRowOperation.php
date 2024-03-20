@@ -52,4 +52,9 @@ class SwapRowOperation implements ElementaryRowOperation, HasConstraint
   {
     return "B" . $this->firstRow . " <=> " . "B" . $this->secondRow;
   }
+
+  public function undo(Matrix $matrix): void
+  {
+    $this->executeTo($matrix);
+  }
 }

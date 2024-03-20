@@ -52,6 +52,18 @@ class ScalarMultiplicationRowOperation implements ElementaryRowOperation, HasCon
     return $values;
   }
 
+  public function undo(Matrix $matrix): void
+  {
+    $row = $matrix->getRow($this->row);
+    $valueTemp = [];
+
+    foreach ($row->getValues() as $value) {
+      $valueTemp[] = $value / $this->scalar;
+    }
+
+    $matrix->replaceRow($this->row, $valueTemp);
+  }
+
   public function getDescription(): string
   {
     return $this->scalar . " * B" . $this->row;

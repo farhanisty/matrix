@@ -30,4 +30,16 @@ class SumByMultiplesOfOtherRowOperationTest extends TestCase
 
     $this->assertSame("2B2 + B1", $operation->getDescription());
   }
+
+  public function testUndo()
+  {
+    $matrix = new Matrix(2, 2, [[2, 2], [3, 3]]);
+
+    $operation = new SumByMultiplesOfOtherRowOperation(2, 1, 2, $matrix);
+
+    $operation->executeTo($matrix);
+    $operation->undo($matrix);
+
+    $this->assertSame([3.0, 3.0], $matrix->getRow(2)->getValues());
+  }
 }

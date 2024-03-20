@@ -41,4 +41,15 @@ class SwapRowOperationTest extends TestCase
 
     $this->assertSame("B5 <=> B2", $operation->getDescription());
   }
+
+  public function testUndo()
+  {
+    $matrix = new Matrix(4, 3, [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]);
+    $operation = new SwapRowOperation(4, 2, $matrix);
+
+    $operation->executeTo($matrix);
+    $operation->undo($matrix);
+
+    $this->assertSame([4, 5, 6], $matrix->getRow(2)->getValues());
+  }
 }

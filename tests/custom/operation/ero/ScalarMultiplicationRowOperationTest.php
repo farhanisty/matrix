@@ -34,4 +34,15 @@ class ScalarMultiplicationRowOperationTest extends TestCase
 
     $this->assertSame("2 * B3", $operation->getDescription());
   }
+
+  public function testUndo()
+  {
+    $matrix = new Matrix(3, 4, [[1, 2, 3, 4], [5, 6, 7, 7], [2, 2, 2, 2]]);
+    $operation = new ScalarMultiplicationRowOperation(2, 3, $matrix);
+
+    $operation->executeTo($matrix);
+    $operation->undo($matrix);
+
+    $this->assertSame([2.0, 2.0, 2.0, 2.0], $matrix->getRow(3)->getValues());
+  }
 }
