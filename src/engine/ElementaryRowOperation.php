@@ -2,8 +2,10 @@
 
 namespace Farhanisty\Matrix\Engine;
 
-interface ElementaryRowOperation extends MatrixResultOperation
+abstract class ElementaryRowOperation implements MatrixResultOperation, HasOneMatrixParam
 {
-  public function getDescription(): string;
-  public function undo(Matrix $matrix): void;
+  use HasOneMatrixParamTrait;
+
+  abstract public function getDescription(): string;
+  abstract public function undo(Matrix $matrix): void;
 }

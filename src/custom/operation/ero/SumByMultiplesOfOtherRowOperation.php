@@ -9,13 +9,12 @@ use Farhanisty\Matrix\Engine\HasConstraint;
 use Farhanisty\Matrix\Engine\Matrix;
 use Farhanisty\Matrix\Engine\MatrixConstraint;
 
-class SumByMultiplesOfOtherRowOperation implements ElementaryRowOperation, HasConstraint
+class SumByMultiplesOfOtherRowOperation extends ElementaryRowOperation implements HasConstraint
 {
   public function __construct(
     private float $scalar,
     private int $otherRow,
-    private int $mainRow,
-    private Matrix $matrix
+    private int $mainRow
   ) {
   }
 

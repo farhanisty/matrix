@@ -8,12 +8,11 @@ use Farhanisty\Matrix\Engine\HasConstraint;
 use Farhanisty\Matrix\Engine\Matrix;
 use Farhanisty\Matrix\Engine\MatrixConstraint;
 
-class SwapRowOperation implements ElementaryRowOperation, HasConstraint
+class SwapRowOperation extends ElementaryRowOperation implements HasConstraint
 {
   public function __construct(
     private int $firstRow,
     private int $secondRow,
-    private Matrix $matrix
   ) {
   }
 

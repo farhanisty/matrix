@@ -15,17 +15,17 @@ class ElementaryRowOperationImpl implements ElementaryRowOperation
 
   public function scalarMultiplication(float $scalar, int $row): void
   {
-    $this->operations[] = new ScalarMultiplicationRowOperation($scalar, $row, $this->matrix);
+    $this->operations[] = new ScalarMultiplicationRowOperation($scalar, $row);
   }
 
   public function swapRow(int $firstRow, int $secondRow): void
   {
-    $this->operations[] = new SwapRowOperation($firstRow, $secondRow, $this->matrix);
+    $this->operations[] = new SwapRowOperation($firstRow, $secondRow);
   }
 
   public function sumByMultiplesOfOtherRow(float $scalar, int $otherRow, int $mainRow)
   {
-    $this->operations[] = new SumByMultiplesOfOtherRowOperation($scalar, $otherRow, $mainRow, $this->matrix);
+    $this->operations[] = new SumByMultiplesOfOtherRowOperation($scalar, $otherRow, $mainRow);
   }
 
   public function length(): int
@@ -63,12 +63,18 @@ class ElementaryRowOperationImpl implements ElementaryRowOperation
 
   public function undo(): void
   {
-    ($this->operations[$this->getPosition() - 1])->undo($this->matrix);
+    $eroOperation = $this->operations[$this->getPosition() - 1];
+    $eroOperation->setMatrix($this->matrix);
+
+    $eroOperation->undo($this->matrix);
   }
 
   public function execute(): void
   {
-    ($this->operations[$this->getPosition() - 1])->executeTo($this->matrix);
+    $eroOperation = $this->operations[$this->getPosition() - 1];
+    $eroOperation->setMatrix($this->matrix);
+
+    $eroOperation->executeTo($this->matrix);
   }
 
   public function executeAll(): void
