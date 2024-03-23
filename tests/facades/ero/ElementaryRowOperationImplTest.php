@@ -2,6 +2,8 @@
 
 namespace Farhanisty\Matrix\Facades\ERO;
 
+use Farhanisty\Matrix\Custom\Operation\ERO\ScalarMultiplicationRowOperation;
+use Farhanisty\Matrix\Custom\Operation\ERO\SwapRowOperation;
 use Farhanisty\Matrix\Engine\Matrix;
 use PHPUnit\Framework\TestCase;
 
@@ -18,6 +20,21 @@ class ElementaryRowOperationImplTest extends TestCase
     $ero->setMatrix($this->matrix);
 
     $this->ero = $ero;
+  }
+
+  public function testGetActiveOperation()
+  {
+    $matrix = new Matrix(3, 3, [[1, 2, 3], [3, 4, 5], [6, 7, 8]]);
+    $ero = new ElementaryRowOperationImpl();
+    $ero->setMatrix($matrix);
+
+    $ero->scalarMultiplication(2, 2);
+    $ero->swapRow(1, 2);
+
+    $this->assertInstanceOf(ScalarMultiplicationRowOperation::class, $ero->getActiveOperation());
+
+    $ero->next();
+    $this->assertInstanceOf(SwapRowOperation::class, $ero->getActiveOperation());
   }
 
   public function testLength()
@@ -44,15 +61,15 @@ class ElementaryRowOperationImplTest extends TestCase
 
     $ero->scalarMultiplication(2, 2);
     $ero->swapRow(1, 2);
-    
+
     $this->assertSame($ero->getPosition(), 1);
 
     $this->assertTrue($ero->next());
     $this->assertSame($ero->getPosition(), 2);
-    
+
     $this->assertFalse($ero->next());
     $this->assertSame($ero->getPosition(), 2);
-    
+
     $this->assertFalse($ero->next());
     $this->assertSame($ero->getPosition(), 2);
   }
@@ -63,7 +80,7 @@ class ElementaryRowOperationImplTest extends TestCase
     $ero = new ElementaryRowOperationImpl();
 
     $ero->setMatrix($matrix);
-    
+
     $ero->scalarMultiplication(2, 2);
     $ero->scalarMultiplication(2, 2);
     $ero->swapRow(1, 2);
@@ -74,10 +91,10 @@ class ElementaryRowOperationImplTest extends TestCase
 
     $this->assertTrue($ero->prev());
     $this->assertSame($ero->getPosition(), 2);
-    
+
     $this->assertTrue($ero->prev());
     $this->assertSame($ero->getPosition(), 1);
-    
+
     $this->assertFalse($ero->prev());
     $this->assertSame($ero->getPosition(), 1);
   }
@@ -91,15 +108,15 @@ class ElementaryRowOperationImplTest extends TestCase
 
     $ero->scalarMultiplication(2, 2);
     $ero->swapRow(1, 2);
-    
+
     $this->assertSame($ero->getPosition(), 1);
 
     $ero->next();
     $this->assertSame($ero->getPosition(), 2);
-    
+
     $ero->prev();
     $this->assertSame($ero->getPosition(), 1);
-    
+
     $ero->prev();
     $this->assertSame($ero->getPosition(), 1);
 
@@ -119,16 +136,16 @@ class ElementaryRowOperationImplTest extends TestCase
     $ero = new ElementaryRowOperationImpl();
 
     $ero->setMatrix($matrix);
-    
+
     $ero->scalarMultiplication(2, 2);
 
     $ero->execute();
 
-    $this->assertSame($matrix->getRow(2)->getValues(), [6.0,8.0,10.0]);
-    
+    $this->assertSame($matrix->getRow(2)->getValues(), [6.0, 8.0, 10.0]);
+
     $ero->execute();
-    
-    $this->assertSame($matrix->getRow(2)->getValues(), [12.0,16.0,20.0]);
+
+    $this->assertSame($matrix->getRow(2)->getValues(), [12.0, 16.0, 20.0]);
   }
 
   public function testScalarMultiplication()
@@ -141,7 +158,7 @@ class ElementaryRowOperationImplTest extends TestCase
 
     $ero->execute();
 
-    $this->assertSame($matrix->getRow(2)->getValues(), [6.0,8.0,10.0]);
+    $this->assertSame($matrix->getRow(2)->getValues(), [6.0, 8.0, 10.0]);
   }
 
   public function testSwapRow()
@@ -150,11 +167,11 @@ class ElementaryRowOperationImplTest extends TestCase
     $ero = new ElementaryRowOperationImpl();
     $ero->setMatrix($matrix);
 
-    $ero->swapRow(1,2);
+    $ero->swapRow(1, 2);
     $ero->execute();
 
-    $this->assertSame($matrix->getRow(1)->getValues(), [3,4,5]);
-    $this->assertSame($matrix->getRow(2)->getValues(), [1,2,3]);
+    $this->assertSame($matrix->getRow(1)->getValues(), [3, 4, 5]);
+    $this->assertSame($matrix->getRow(2)->getValues(), [1, 2, 3]);
   }
 
   public function testSumByMultiplesOfOtherRow()
@@ -163,10 +180,10 @@ class ElementaryRowOperationImplTest extends TestCase
     $ero = new ElementaryRowOperationImpl();
     $ero->setMatrix($matrix);
 
-    $ero->sumByMultiplesOfOtherRow(1,1,2);
+    $ero->sumByMultiplesOfOtherRow(1, 1, 2);
     $ero->execute();
 
-    $this->assertSame($matrix->getRow(2)->getValues(), [4.0,6.0,8.0]);
+    $this->assertSame($matrix->getRow(2)->getValues(), [4.0, 6.0, 8.0]);
   }
 
   public function testExecuteAll()
@@ -175,15 +192,15 @@ class ElementaryRowOperationImplTest extends TestCase
     $ero = new ElementaryRowOperationImpl();
     $ero->setMatrix($matrix);
 
-    $ero->swapRow(1,2);
-    $ero->swapRow(2,1);
+    $ero->swapRow(1, 2);
+    $ero->swapRow(2, 1);
 
     $ero->executeAll();
 
     $ero->undo();
-    $this->assertSame($matrix->getRow(1)->getValues(), [3,4,5]);
+    $this->assertSame($matrix->getRow(1)->getValues(), [3, 4, 5]);
 
     $ero->undo();
-    $this->assertSame($matrix->getRow(1)->getValues(), [1,2,3]);
+    $this->assertSame($matrix->getRow(1)->getValues(), [1, 2, 3]);
   }
 }

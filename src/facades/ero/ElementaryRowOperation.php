@@ -2,6 +2,7 @@
 
 namespace Farhanisty\Matrix\Facades\ERO;
 
+use Farhanisty\Matrix\Engine\ElementaryRowOperation as EngineElementaryRowOperation;
 use Farhanisty\Matrix\Engine\Matrix;
 
 interface ElementaryRowOperation
@@ -9,6 +10,7 @@ interface ElementaryRowOperation
   public function scalarMultiplication(float $scalar, int $row): void;
   public function swapRow(int $firstRow, int $secondRow): void;
   public function sumByMultiplesOfOtherRow(float $scalar, int $otherRow, int $mainRow);
+  public function getActiveOperation(): ?EngineElementaryRowOperation;
   public function length(): int;
   public function getPosition(): ?int;
   public function resetPosition(): void;

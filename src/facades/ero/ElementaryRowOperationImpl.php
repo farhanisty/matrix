@@ -5,9 +5,11 @@ namespace Farhanisty\Matrix\Facades\ERO;
 use Farhanisty\Matrix\Custom\Operation\ERO\ScalarMultiplicationRowOperation;
 use Farhanisty\Matrix\Custom\Operation\ERO\SumByMultiplesOfOtherRowOperation;
 use Farhanisty\Matrix\Custom\Operation\ERO\SwapRowOperation;
+use Farhanisty\Matrix\Engine\ElementaryRowOperation;
 use Farhanisty\Matrix\Engine\Matrix;
+use Farhanisty\Matrix\Facades\ERO\ElementaryRowOperation as EROElementaryRowOperation;
 
-class ElementaryRowOperationImpl implements ElementaryRowOperation
+class ElementaryRowOperationImpl implements EROElementaryRowOperation
 {
   private ?Matrix $matrix;
   private int $position = 0;
@@ -26,6 +28,15 @@ class ElementaryRowOperationImpl implements ElementaryRowOperation
   public function sumByMultiplesOfOtherRow(float $scalar, int $otherRow, int $mainRow)
   {
     $this->operations[] = new SumByMultiplesOfOtherRowOperation($scalar, $otherRow, $mainRow);
+  }
+
+  public function getActiveOperation(): ?ElementaryRowOperation
+  {
+    if ($this->getPosition()) {
+      return $this->operations[$this->getPosition() - 1];
+    }
+
+    return null;
   }
 
   public function length(): int
