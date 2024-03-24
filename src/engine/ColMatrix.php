@@ -34,7 +34,7 @@ class ColMatrix
     $this->values = $values;
   }
 
-  public function setValueByPosition(int $position, int $value): void
+  public function setValueByPosition(int $position, float $value): void
   {
     $constraint = new ValueRangeConstraint(1, $this->length(), $position);
     $result = $constraint->check();
@@ -46,7 +46,7 @@ class ColMatrix
     $this->values[$position - 1] = $value;
   }
 
-  public function getValueByPosition(int $position): int
+  public function getValueByPosition(int $position): float
   {
     if ($position > $this->length() || $position < 1) {
       throw new OutOfRangeException();
@@ -60,7 +60,7 @@ class ColMatrix
     return count($this->getValues());
   }
 
-  public function multiplyValues(): int
+  public function multiplyValues(): float
   {
     $result = 1;
 
@@ -84,7 +84,7 @@ class ColMatrix
     return true;
   }
 
-  public function isContain(int $searchValue): bool
+  public function isContain(float $searchValue): bool
   {
     foreach ($this->values as $value) {
       if ($value == $searchValue) {

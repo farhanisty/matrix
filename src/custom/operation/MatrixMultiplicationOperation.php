@@ -13,7 +13,8 @@ class MatrixMultiplicationOperation implements MatrixResultOperation, HasConstra
   public function __construct(
     private Matrix $firstMatrix,
     private Matrix $secondMatrix
-  ) {}
+  ) {
+  }
 
   public function getConstraint(): MatrixConstraint
   {
@@ -34,10 +35,10 @@ class MatrixMultiplicationOperation implements MatrixResultOperation, HasConstra
   {
     $result = [];
 
-    foreach($this->firstMatrix->getAllRows() as $rowIndex => $firstMatrixRow) {
-      foreach($this->secondMatrix->getAllCols() as $colIndex => $secondMatrixCol) {
+    foreach ($this->firstMatrix->getAllRows() as $rowIndex => $firstMatrixRow) {
+      foreach ($this->secondMatrix->getAllCols() as $colIndex => $secondMatrixCol) {
         $tmp = 0;
-        for($i = 1;$i <= $this->firstMatrix->getWidth();$i++) {
+        for ($i = 1; $i <= $this->firstMatrix->getWidth(); $i++) {
           $tmp += $firstMatrixRow->getValueByPosition($i) * $secondMatrixCol->getValueByPosition($i);
         }
 
